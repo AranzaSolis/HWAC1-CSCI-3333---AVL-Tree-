@@ -215,7 +215,41 @@
 	// the search in reverse search order.
 	//
 	// Should run in O(1) time.
-	void Autocompleter::rebalance(Node* &p);
+	void Autocompleter::rebalance(Node* &p)
+    {
+        //update height of current node
+        update_height(p);
+
+        //calculate balance
+        //negative ->left side is taller
+        //positive -> right side is taller
+        int balance = height(p->left) - height(p->right);
+
+        //if left subtree is more than 1 level taller
+        if(balance > 1)
+        {
+            //if left subtree's right subtree is taller than left subtree's left subtree
+            if(height(p->left->right) > height(p->left->left))
+            {
+                //Do the left rotation 
+                left_rotate(p->left);
+            }
+            //do right rotation
+            right_rotate(p);
+        }
+        //if right subtree is more than 1 level taller
+        else if(balance < -1)
+        {
+            //if right subtree's left subtree is taller than right subtree's right subtree
+            if(height(p->right->left) > height(p->right->right))
+            {
+                //DO right rotation 
+                right_rotate(p->right);
+            }
+            //then do left rotation
+            left_rotate(p);
+        }
+    }
 
 	// Perform left and right rotations
 	// of an AVL tree rooted at p (helpful for implementing rebalance).
