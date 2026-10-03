@@ -85,36 +85,36 @@
         //clears T from previous stored strings
         T.clear();
 
-        //vector that stores all matching entries
-        vector<Entry> match;
+        //vector that stores all MATCHING entries
+        vector<Entry> C;
 
         //search the part of AVL tree that can contain the matching entries
-        completions_recurse(x, root, match);
+        completions_recurse(x, root, C);
 
         //will loop until it finds the 3 most frequent matching words
         //and as long as there are still matching words
-        for (int i = 0; i < 3 && !match.emtpy() > 0; i++)
+        for (int i = 0; i < 3 && !C.emtpy() > 0; i++)
         {
             //stores first matching word as the one who has the highest frequency
             int highest; 
             //loop thorugh the matching words
             //j=1 because we start at the second element (first element is "highest" at beginning)
-            for (int j = 1; j < match.size(); j++)
+            for (int j = 1; j < C.size(); j++)
             {
                 //if the current word has higher frequency than current highest
                 //make highest the current word
-                if(match[j].freq > match[best].fre)
+                if(C[j].freq > C[best].fre)
                 {
                     highest = j;
                 }
             }
 
             //add most frequent word to T
-            T.push_back(match[[highest].s]);
+            T.push_back(C[[highest].s]);
             //remove the added highest word to continue finding next highest
-            match.erase(match.begin() + highest);
-
+            C.erase(C.begin() + highest);
     }
+
 /////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////
 	// Optional helper methods (you'll probably want them)
@@ -139,7 +139,10 @@
     }
 
 	// Fills C with the completions of x in the BST rooted at p.
-	void Autocompleter::completions_recurse(string x, Node* p, vector<Entry> &C);
+	void Autocompleter::completions_recurse(string x, Node* p, vector<Entry> &C)
+    {
+        //BASE CASE
+    }
 
 	// Inserts an Entry into an AVL tree rooted at p.
 	//
