@@ -115,13 +115,28 @@
             match.erase(match.begin() + highest);
 
     }
-
+/////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////
 	// Optional helper methods (you'll probably want them)
 
 	// Returns the size of the binary tree rooted at p.
 	//
 	// Should run in O(n) time.
-	int Autocompleter::size_recurse(Node* p);
+	int Autocompleter::size_recurse(Node* p)
+    {
+        //BASE CASE --> no nodes
+        if(p==nullptr)
+        {
+            return 0;
+        }
+
+        //store left and right size of subtrees
+        int left = size_recurse(p->left);
+        int right = size_recurse(p->right);
+        //count current node, then all nodes in left and right
+        return 1 + left + right;
+        
+    }
 
 	// Fills C with the completions of x in the BST rooted at p.
 	void Autocompleter::completions_recurse(string x, Node* p, vector<Entry> &C);
