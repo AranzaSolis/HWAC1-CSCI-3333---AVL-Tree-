@@ -180,7 +180,33 @@
 	// Should run in O(log(n)) time.
 	void Autocompleter::insert_recurse(Entry e, Node* &p)
     {
-        
+        //BASE CASE
+        if(p==nullptr)
+        {
+            //create new node with the Entry
+            p = new Node(e);
+            return; //node was inserted
+        }
+
+        //if new word comes before current word alphapbetically
+        //insert to left subtree
+        if(e.s < p->e.s)
+        {
+            insert_recurse(e, p->left);
+        }
+        //if new word comes after current word alphapbetically
+        //insert to right subtree
+        else if(e.s > p->e.s)
+        {
+            insert_recurse(e, p->right);
+        }
+        else //if words are equal (word already in dictionary)
+        {
+            return; //do nothing
+        }
+
+        //rebalance node after insertion
+        rebalance(p);
     }
 
 	// Rebalances the AVL tree rooted at p.
