@@ -93,7 +93,7 @@
 
         //will loop until it finds the 3 most frequent matching words
         //and as long as there are still matching words
-        for (int i = 0; i < 3 && !C.emtpy() > 0; i++)
+        for (int i = 0; i < 3 && !C.empty() > 0; i++)
         {
             //stores first matching word as the one who has the highest frequency
             int highest; 
@@ -141,13 +141,47 @@
 	// Fills C with the completions of x in the BST rooted at p.
 	void Autocompleter::completions_recurse(string x, Node* p, vector<Entry> &C)
     {
-        //BASE CASE
+        //BASE CASE -> no nodes 
+        if(p==nullptr)
+        {
+            return;
+        }
+        
+        //compare beginning of current word with x
+        int compare = p->e.s.compare(0, x.size(), x);
+
+        //if current word starts with x, then it is a completion
+        if(compare==0)
+        {
+            //add current word to C
+            C.push_back(p->e);
+
+            //search left subtree for more completions (matching words)
+            completions_recurse(x, p->left, C);
+            //search right subtree for more matching words
+            completions_recurse(x, p->right, C);
+        }
+        //if current word comes before x alphabetically,
+        //searach the right subtree
+        if(compare < 0)
+        {
+            completions_recurse(x, p->right, C);
+        }
+        //if current word comes after x alphabetically,
+        //searach the left subtree
+        if(compare > 0)
+        {
+            completions_recurse(x, p->left, C);
+        }
     }
 
 	// Inserts an Entry into an AVL tree rooted at p.
 	//
 	// Should run in O(log(n)) time.
-	void Autocompleter::insert_recurse(Entry e, Node* &p);
+	void Autocompleter::insert_recurse(Entry e, Node* &p)
+    {
+        
+    }
 
 	// Rebalances the AVL tree rooted at p.
 	// Helpful for insert().
