@@ -250,37 +250,36 @@
 	// Should run in O(1) time.
 	void Autocompleter::rebalance(Node* &p)
     {
-        //update height of current node
+         //Update the height of the current node.
         update_height(p);
 
-        //calculate balance
-        //positive ->left side is taller
-        //negative -> right side is taller
-        int balance = height(p->left) - height(p->right);
-
-        //if left subtree is more than 1 level taller
-        if(balance > 1)
+        //check if LEFT subtree is more than 1 level taller
+        //than the RIGHT subtree 
+        //if true, p is too heavy on the LEFT side
+        if (height(p->left) > height(p->right) + 1)
         {
-            //if left subtree's right subtree is taller than left subtree's left subtree
-            if(height(p->left->right) > height(p->left->left))
+            //
+            if (height(p->left->left) > height(p->left->right))
+                    right_rotate(p);
+            else
             {
-                //Do the left rotation 
                 left_rotate(p->left);
+                right_rotate(p);
             }
-            //do right rotation
-            right_rotate(p);
         }
-        //if right subtree is more than 1 level taller
-        else if(balance < -1)
+        else if (height(p->right) > height(p->left) + 1)
         {
-            //if right subtree's left subtree is taller than right subtree's right subtree
-            if(height(p->right->left) > height(p->right->right))
+            if (height(p->right->right) > height(p->right->left))
+                left_rotate(p);
+            else
             {
-                //DO right rotation 
                 right_rotate(p->right);
+                left_rotate(p);
             }
-            //then do left rotation
-            left_rotate(p);
+        }   
+        else
+        {
+            //p is balanced after all!
         }
     }
 
