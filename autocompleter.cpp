@@ -110,7 +110,7 @@
             }
 
             //add most frequent word to T
-            T.push_back(C[highest].s]);
+            T.push_back(C[highest].s);
             //remove the added highest word to continue finding next highest
             C.erase(C.begin() + highest);
         }
@@ -210,6 +210,38 @@
         rebalance(p);
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	// Rebalances the AVL tree rooted at p.
 	// Helpful for insert().
 	// Should be called on every node visited during
@@ -222,8 +254,8 @@
         update_height(p);
 
         //calculate balance
-        //negative ->left side is taller
-        //positive -> right side is taller
+        //positive ->left side is taller
+        //negative -> right side is taller
         int balance = height(p->left) - height(p->right);
 
         //if left subtree is more than 1 level taller
@@ -252,36 +284,61 @@
         }
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
 	// Perform left and right rotations
 	// of an AVL tree rooted at p (helpful for implementing rebalance).
 	//
 	// Should run in O(1) time.
 	void Autocompleter::right_rotate(Node* &p)
     {
-        node* A = p;            //store current root in A
-		node* B = p->left;      //store left child in B
-		node* br = B->right;    //store B's right subtree
+        Node* A = p;            //store current root in A
+		Node* B = p->left;      //store left child in B
+		Node* br = B->right;    //store B's right subtree
 
 		p = B;                  //B is the new root
 		A->left = br;           //move B's right subtree to A's left side
 		B->right = A;           //make A the right child of B
 
 		//update heights
-		updateHeight(A);
-		updateHeight(B);
+		update_Height(A);
+		update_Height(B);
     }
 	void Autocompleter::left_rotate(Node* &p)
     {
-        node* A = p;            //store current root in A
-		node* B = p->right;     //store right child in B
-		node* bl = B->left;     //store B's left subtree
+        Node* A = p;            //store current root in A
+		Node* B = p->right;     //store right child in B
+		Node* bl = B->left;     //store B's left subtree
 
 		p = B;                  //B is the new root
 		A->right = bl;          //move B's left subtree to A's right side   
 		B->left = A;            //make A the left child of B
 
 		//update heights
-		updateHeight(A);
-		updateHeight(B);
+		update_Height(A);
+		update_Height(B);
     }
-};
