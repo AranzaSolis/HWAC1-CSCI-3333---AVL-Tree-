@@ -35,7 +35,7 @@
 // Creates a new Autocompleter with an empty dictionary.
 	//
 	// Must run in O(1) time.
-	Autocompleter()
+	Autocompleter::Autocompleter()
     {
         root = nullptr; //empty tree
     }
@@ -93,26 +93,27 @@
 
         //will loop until it finds the 3 most frequent matching words
         //and as long as there are still matching words
-        for (int i = 0; i < 3 && !C.empty() > 0; i++)
+        for (int i = 0; i < 3 && !C.empty(); i++)
         {
             //stores first matching word as the one who has the highest frequency
-            int highest; 
+            int highest = 0; 
             //loop thorugh the matching words
             //j=1 because we start at the second element (first element is "highest" at beginning)
             for (int j = 1; j < C.size(); j++)
             {
                 //if the current word has higher frequency than current highest
                 //make highest the current word
-                if(C[j].freq > C[best].fre)
+                if(C[j].freq > C[highest].freq)
                 {
                     highest = j;
                 }
             }
 
             //add most frequent word to T
-            T.push_back(C[[highest].s]);
+            T.push_back(C[highest].s]);
             //remove the added highest word to continue finding next highest
             C.erase(C.begin() + highest);
+        }
     }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -257,13 +258,13 @@
 	// Should run in O(1) time.
 	void Autocompleter::right_rotate(Node* &p)
     {
-        node* A = p;
-		node* B = p->left;
-		node* br = B->right;
+        node* A = p;            //store current root in A
+		node* B = p->left;      //store left child in B
+		node* br = B->right;    //store B's right subtree
 
-		p = B;
-		A->left = br;
-		B->right = A;
+		p = B;                  //B is the new root
+		A->left = br;           //move B's right subtree to A's left side
+		B->right = A;           //make A the right child of B
 
 		//update heights
 		updateHeight(A);
@@ -271,13 +272,13 @@
     }
 	void Autocompleter::left_rotate(Node* &p)
     {
-        node* A = p;
-		node* B = p->right;
-		node* bl = B->left;
+        node* A = p;            //store current root in A
+		node* B = p->right;     //store right child in B
+		node* bl = B->left;     //store B's left subtree
 
-		p = B;
-		A->right = bl;
-		B->left = A;
+		p = B;                  //B is the new root
+		A->right = bl;          //move B's left subtree to A's right side   
+		B->left = A;            //make A the left child of B
 
 		//update heights
 		updateHeight(A);
