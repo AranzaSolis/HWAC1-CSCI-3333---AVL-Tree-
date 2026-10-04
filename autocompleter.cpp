@@ -1,36 +1,6 @@
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#include "autocompleter.h"
-
-
-
-
-
 #include <algorithm>
-
-
+#include "autocompleter.h"
 
 // Creates a new Autocompleter with an empty dictionary.
 	//
@@ -80,6 +50,8 @@
 	// Instead, only search regions of the tree for which a completion could
 	// be present, which will yield a run time bound of O(k log n ) time,
 	// where k is the number of completions in the tree.
+    //    O(klogn) -> n = total number of words/nodes in the AVL tree.
+    //                k = number of words that actually complete x.   
 	void Autocompleter::completions(string x, vector<string> &T)
     {
         //clears T from previous stored strings
@@ -148,7 +120,8 @@
             return;
         }
         
-        //compare beginning of current word with x
+        //compare beginning of current word with x (at position 0)
+        //compares the same # of letters as x
         int compare = p->e.s.compare(0, x.size(), x);
 
         //if current word starts with x, then it is a completion
@@ -210,38 +183,6 @@
         rebalance(p);
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 	// Rebalances the AVL tree rooted at p.
 	// Helpful for insert().
 	// Should be called on every node visited during
@@ -258,21 +199,31 @@
         //if true, p is too heavy on the LEFT side
         if (height(p->left) > height(p->right) + 1)
         {
-            //
+            //check LEFT child of p
+            //if its LEFT subtree is taller than its RIGHT subtree
+            //then the heavy path is LEFT -> LEFT (LL)
             if (height(p->left->left) > height(p->left->right))
-                    right_rotate(p);
+                    right_rotate(p); //to fix imbalance
             else
             {
+                //(NOT LL so must be LR rotation)
                 left_rotate(p->left);
                 right_rotate(p);
             }
         }
+        //check if RIGHT subtree is more than 1 level taller
+        //than the LEFT subtree
+        //if true, p is too heavy on the RIGHT side
         else if (height(p->right) > height(p->left) + 1)
         {
+            //check if RIGHT child subtree is taller than its
+            //LEFT subtree
+            //means that the heavy part is RIGHT -> RIGHT (RR)
             if (height(p->right->right) > height(p->right->left))
-                left_rotate(p);
+                left_rotate(p); //to fix imbalance
             else
             {
+                //(NOT RR so must be RL rotation)
                 right_rotate(p->right);
                 left_rotate(p);
             }
@@ -324,8 +275,8 @@
 		B->right = A;           //make A the right child of B
 
 		//update heights
-		update_Height(A);
-		update_Height(B);
+		update_height(A);
+		update_height(B);
     }
 	void Autocompleter::left_rotate(Node* &p)
     {
@@ -338,6 +289,6 @@
 		B->left = A;            //make A the left child of B
 
 		//update heights
-		update_Height(A);
-		update_Height(B);
+		update_height(A);
+		update_height(B);
     }
