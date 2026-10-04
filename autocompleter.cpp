@@ -255,17 +255,32 @@
 	// of an AVL tree rooted at p (helpful for implementing rebalance).
 	//
 	// Should run in O(1) time.
-	void Autocompleter::right_rotate(Node* &p);
-	void Autocompleter::left_rotate(Node* &p);
+	void Autocompleter::right_rotate(Node* &p)
+    {
+        node* A = p;
+		node* B = p->left;
+		node* br = B->right;
 
+		p = B;
+		A->left = br;
+		B->right = A;
 
-	//A useful method to update
-	//the height of a node,
-	//assuming subtrees already have
-	//the correct height.
-	void Autocompleter::update_height(Node*& p)
-	{
-		if (p != nullptr)
-			p->height = 1 + max(height(p->left), height(p->right));
-	}
+		//update heights
+		updateHeight(A);
+		updateHeight(B);
+    }
+	void Autocompleter::left_rotate(Node* &p)
+    {
+        node* A = p;
+		node* B = p->right;
+		node* bl = B->left;
+
+		p = B;
+		A->right = bl;
+		B->left = A;
+
+		//update heights
+		updateHeight(A);
+		updateHeight(B);
+    }
 };
